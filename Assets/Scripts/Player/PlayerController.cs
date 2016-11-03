@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 
     public AudioClip[] laserShotAudio;
 
+    private float initZPosition;                
 	private float horizontalInput = 0;			// Magnitude of horizontal input coming from the input axis
 	private float verticalInput = 0;			// Magnitude of vertical input coming from the input axis
 	private bool shootInput = false;			// Whether the player is shooting this frame
@@ -23,18 +24,19 @@ public class PlayerController : MonoBehaviour {
     private GameObject shotSpawns;
     private float shotTimer;
 
-	private Rigidbody2D rb;
+	private Rigidbody rb;
     private AudioSource audioSource;
 
 	// Use this for initialization
 	void Start () {
 		// Set up references
-		rb = GetComponent<Rigidbody2D>();
-        shotSpawns = transform.FindChild("Shot Spawns").gameObject;
+		rb = GetComponent<Rigidbody>();
+        //shotSpawns = transform.FindChild("Shot Spawns").gameObject;
         audioSource = GetComponent<AudioSource>();
 
 		// Set up variables
 		shotTimer = minShotInterval;
+        initZPosition = transform.position.z;
 	}
 	
 	// Update is called once per frame
@@ -84,7 +86,7 @@ public class PlayerController : MonoBehaviour {
 
 	private void Move(){
 		ConstrainPosition ();
-		Vector2 moveForce = new Vector2 (horizontalInput, verticalInput) * speed;
+		Vector3 moveForce = new Vector3 (horizontalInput, verticalInput, 0) * speed;
 		rb.velocity = moveForce;
 		ConstrainPosition ();
 	}
@@ -93,15 +95,16 @@ public class PlayerController : MonoBehaviour {
 
 		// Cancel velocities if hitting borders
 		if (rb.position.x < xMin || rb.position.x > xMax)
-			rb.velocity = new Vector2(0, rb.velocity.y);
+			rb.velocity = new Vector3(0, rb.velocity.y,0);
 
 		if (rb.position.y < yMin || rb.position.y > yMax)
-			rb.velocity = new Vector2(rb.velocity.x, 0);
+			rb.velocity = new Vector3(rb.velocity.x, 0,0);
 
 		// Clamp positions
-		rb.position = new Vector2 (
+		rb.position = new Vector3 (
 			Mathf.Clamp (rb.position.x, xMin, xMax),
-			Mathf.Clamp (rb.position.y, yMin, yMax)
+			Mathf.Clamp (rb.position.y, yMin, yMax),
+            initZPosition
 		);
 	}
 }
