@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		// Set up references
 		rb = GetComponent<Rigidbody>();
-        //shotSpawns = transform.FindChild("Shot Spawns").gameObject;
+        shotSpawns = transform.FindChild("Shot Spawns").gameObject;
         audioSource = GetComponent<AudioSource>();
 
 		// Set up variables
@@ -72,11 +72,18 @@ public class PlayerController : MonoBehaviour {
             foreach (Transform shotSpawn in shotSpawners.transform)
             {
                 tempBullet = (GameObject)Instantiate(bullet, shotSpawn.position, shotSpawn.rotation);
+
+                /* OLD IMPLEMENTATION
                 Vector2 shotVector = new Vector2(0, shotForce);
                 shotVector = AuxFunctions.RotateVector2d(shotVector, shotSpawn.eulerAngles.z);
-                tempBullet.GetComponent<Rigidbody2D>().velocity = shotVector;
-                
+                */
+
+                // New implementation
+                Vector3 shotVector = new Vector3(0, 0, 1) * shotForce;
+
+                tempBullet.GetComponent<Rigidbody>().velocity = shotVector;
             }
+
 			shootInput = false;
 			shotTimer = minShotInterval;
 
