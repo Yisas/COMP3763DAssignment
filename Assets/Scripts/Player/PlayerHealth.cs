@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
 
     public int powerups;
     public int maxNumberOfPickups;
+    public GameObject deathEffect;
 
     public AudioClip hitAudio;                  // Audio that plays when the player is hit, not killed
     public AudioClip deathAudio;                // Audio that plays when the player is killed
@@ -57,7 +58,7 @@ public class PlayerHealth : MonoBehaviour
         playerController.numberOfShots = Mathf.Clamp(playerController.numberOfShots, 1, maxNumberOfPickups + 1);
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OntriggerEnter(Collider col)
     {
         if (col.transform.tag == "Powerup")
         {
@@ -69,9 +70,9 @@ public class PlayerHealth : MonoBehaviour
     public void Die()
     {
         GetComponent<PlayerController>().enabled = false;
-        GetComponent<Collider2D>().enabled = false;
+        GetComponent<Collider>().enabled = false;
 
-        Rigidbody2D[] rbs = GameObject.FindObjectsOfType<Rigidbody2D>();
+        Rigidbody[] rbs = GameObject.FindObjectsOfType<Rigidbody>();
         EnemySpawner[] espwnrs = GameObject.FindObjectsOfType<EnemySpawner>();
         /*
         foreach (Rigidbody2D rb in rbs)
@@ -86,7 +87,10 @@ public class PlayerHealth : MonoBehaviour
         foreach (EnemySpawner es in espwnrs)
             es.enabled = false;
 
-        GetComponent<Animator>().SetTrigger("death");
+        // Deactivate meshes and instantiate death particle effect
+        transform.FindChild("Meshes").gameObject.SetActive(false);
+        Instantiate(deathEffect, transform.position, transform.rotation);
+
         audioSource.volume = 1.0f;
         audioSource.PlayOneShot(deathAudio);
         StartCoroutine(AuxFunctions.ShakeCamera(1, 3));
