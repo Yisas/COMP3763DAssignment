@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour {
 
 	private int timesRespawned = 0;
 
-	void OnTriggerEnter2D(Collider2D col)
+	void OnTriggerEnter(Collider col)
     {
         if(col.transform.tag == "Enemy")
         {

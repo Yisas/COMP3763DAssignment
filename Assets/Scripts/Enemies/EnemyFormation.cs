@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyFormation : MonoBehaviour {
 
 	public GameObject powerupDrop;
-
+   
     private ArrayList enemies = new ArrayList();
 
     private int initialNumOfEnemies;

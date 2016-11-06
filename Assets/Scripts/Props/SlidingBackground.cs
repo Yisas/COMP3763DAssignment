@@ -18,9 +18,6 @@ public class SlidingBackground : MonoBehaviour {
         
         Bounds tempBounds = currentPlane.GetComponent<SpriteRenderer>().bounds;
         planeExtentDistance = Mathf.Abs(tempBounds.max.z - tempBounds.center.z);
-        Debug.Log(tempBounds.center.z);
-        Debug.Log(tempBounds.max.z);
-        Debug.Log(planeExtentDistance);
     }
 
     // Update is called once per frame
@@ -34,8 +31,6 @@ public class SlidingBackground : MonoBehaviour {
     private void InstantiatePlaneOject()
     {
         Bounds bounds = currentPlane.GetComponent<SpriteRenderer>().bounds;
-        Debug.Log(bounds.center.z);
-        Debug.Log(bounds.center.z + planeExtentDistance);
         Vector3 newPosition = new Vector3(
             currentPlane.transform.position.x,
             currentPlane.transform.position.y,
