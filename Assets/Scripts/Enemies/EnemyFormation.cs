@@ -6,6 +6,7 @@ public class EnemyFormation : MonoBehaviour {
 	public GameObject powerupDrop;
    
     private ArrayList enemies = new ArrayList();
+	private GameController gameController;
 
     private int initialNumOfEnemies;
     private int numOfEnemies;
@@ -18,6 +19,9 @@ public class EnemyFormation : MonoBehaviour {
         // Get all enemies in this formation
         foreach (GameObject enemy in AuxFunctions.FindChildrenWithTag(transform.FindChild("Ships").transform, "Enemy"))
             enemies.Add(enemy);
+
+		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
 
         // Setup variables
         numOfEnemies = enemies.Count;
@@ -35,8 +39,11 @@ public class EnemyFormation : MonoBehaviour {
         // If all players are dead, destroy formation object
 		if (numOfEnemies <= 0) {
             // If all enemies where killed by player, drop powerup
-            if(enemiesKilledByPlayer == initialNumOfEnemies)
-			    DropPowerUp (enemyPosition);
+			if (enemiesKilledByPlayer == initialNumOfEnemies) 
+			{
+				DropPowerUp (enemyPosition);
+				gameController.BonusScore(2);
+			}
 
 			Destroy (gameObject);
 		}

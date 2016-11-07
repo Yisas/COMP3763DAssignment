@@ -45,7 +45,7 @@ public class EnemyShip : MonoBehaviour {
 		Instantiate (deathEffect, transform.position, transform.rotation);
         hitByPlayer = true;
         PlayerDeathAudioClip();
-        gameController.IncreaseScore(1);
+        gameController.IncreaseScore(100);
         Destroy(gameObject);
     }
 
@@ -59,8 +59,6 @@ public class EnemyShip : MonoBehaviour {
 	void OnDestroy(){
         if(enemyFormation)
             enemyFormation.EnemyDied(transform.position, hitByPlayer);
-
-        
 	}
 
 	void OnTriggerEnter(Collider col){

@@ -68,6 +68,14 @@ public class GameController : MonoBehaviour {
         scoreTextObject.text = "Score: " + score;
     }
 
+	public void BonusScore(int bonus)
+	{
+		score *= bonus;
+
+		// Set the displayed text to be the word "Score" followed by the score value.
+		scoreTextObject.text = "Score: " + score;
+	}
+
     public void SetGameMode(int mode)
     {
         gameMode = (GameMode) mode;
