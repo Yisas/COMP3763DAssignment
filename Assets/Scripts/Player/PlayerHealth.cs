@@ -26,7 +26,6 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     // Damage is an optional parameter, averageDamageAmount = 10 by default
@@ -58,7 +57,7 @@ public class PlayerHealth : MonoBehaviour
         playerController.numberOfShots = Mathf.Clamp(playerController.numberOfShots, 1, maxNumberOfPickups + 1);
     }
 
-    void OntriggerEnter(Collider col)
+    void OnTriggerEnter(Collider col)
     {
         if (col.transform.tag == "Powerup")
         {

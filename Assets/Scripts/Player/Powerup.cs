@@ -11,11 +11,6 @@ public class Powerup : MonoBehaviour {
         if (GameObject.FindObjectOfType<PlayerHealth>().powerups >= GameObject.FindObjectOfType<PlayerHealth>().maxNumberOfPickups)
             Destroy(gameObject);
 
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -speed);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        GetComponent<Rigidbody>().velocity = new Vector3(0, 0, -speed);
 	}
 }
