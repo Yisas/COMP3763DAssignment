@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour {
 
 	void OnTriggerEnter(Collider col)
     {
-        if(col.transform.tag == "Enemy")
+		if(col.transform.tag == "EnemyBulletTarget")
         {
             col.gameObject.GetComponentInParent<EnemyShip>().HitByPlayer();
             Destroy(gameObject);
