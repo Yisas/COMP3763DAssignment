@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
@@ -79,7 +80,8 @@ public class PlayerController : MonoBehaviour {
                 */
 
                 // New implementation
-                Vector3 shotVector = new Vector3(0, 0, 1) * shotForce;
+				Debug.Log(shotSpawn.localRotation);
+				Vector3 shotVector = new Vector3(-shotSpawn.localRotation.z, 0, 1) * shotForce;
 
                 tempBullet.GetComponent<Rigidbody>().velocity = shotVector;
             }
