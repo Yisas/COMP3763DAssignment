@@ -66,9 +66,8 @@ public class EnemyShipShooter : EnemyShip {
 
 	private IEnumerator Step()
 	{
-		Debug.Log ("here");
 		step = false;
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(5);
 		animator.SetTrigger ("step");
 		step = true;
 	}
