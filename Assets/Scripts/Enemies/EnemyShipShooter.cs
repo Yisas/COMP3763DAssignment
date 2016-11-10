@@ -8,8 +8,10 @@ public class EnemyShipShooter : EnemyShip {
 	public float intervalBetweenShots;
 
 	private Transform shotSpawn;
+	private Animator animator;
 
 	private float shotTimer;						// Countdown to when the enemy is allowed to shoot again
+	bool step;
 
 	new void Start()
 	{
@@ -17,12 +19,19 @@ public class EnemyShipShooter : EnemyShip {
 
 		// Setup references
 		shotSpawn = transform.FindChild ("shotSpawn");
+		animator = GetComponent<Animator> ();
+
+		// Setup variables
+		StartCoroutine (Step ());
 	}
 
 	new void Update()
 	{
 		base.Update ();
 		shotTimer -= Time.deltaTime;
+
+		if (step)
+			StartCoroutine (Step ());
 	}
 
 
@@ -45,15 +54,22 @@ public class EnemyShipShooter : EnemyShip {
 		
 	}
 
-	private void Shoot()
+	public void Shoot()
 	{
-		Debug.Log ("here");
 		if (shotTimer <= 0 && transform.position.y >= 0) {
-			Debug.Log ("here2");
 				GameObject tempBullet = (GameObject)Instantiate (bullet, shotSpawn.transform.position, bullet.transform.rotation);
 			tempBullet.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, -shotForce);
 
 				shotTimer = intervalBetweenShots;
 			} 
+	}
+
+	private IEnumerator Step()
+	{
+		Debug.Log ("here");
+		step = false;
+		yield return new WaitForSeconds(2);
+		animator.SetTrigger ("step");
+		step = true;
 	}
 }
