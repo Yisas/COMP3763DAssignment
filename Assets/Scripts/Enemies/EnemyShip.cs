@@ -7,11 +7,15 @@ public class EnemyShip : MonoBehaviour {
 
 	public GameObject deathEffect;
     public AudioClip[] deathAudio;
+	public float deathRotationMin;
+	public float deathRotationMax;
 
     private GameController gameController;
     protected Rigidbody rb;
     private EnemyFormation enemyFormation;
     private AudioSource audioSource;
+	private GameObject smokeEffect;
+	private float deathRotation;
 
     private bool hitByPlayer = false;                   // Whether this ship has been hit by a player
 
@@ -22,16 +26,21 @@ public class EnemyShip : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         enemyFormation = GetComponentInParent<EnemyFormation>();
         audioSource = GameObject.FindGameObjectWithTag("MainAudioSource").GetComponent<AudioSource>();
+		smokeEffect = transform.FindChild ("trail").gameObject;
 
         // Set speed at start
         rb.velocity = new Vector3(0, 0, -speed);
+		deathRotation = Random.Range (deathRotationMin, deathRotationMax);
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"));
 	}
 	
 	// Not being used for now but explicitly declared for child classes in case something gets added here
 	protected void Update () {
-	    
+		if (hitByPlayer) {
+			transform.Rotate (0, 0, deathRotation * Time.deltaTime); //rotates 50 degrees per second around z axis
+
+		}
 	}
 
 	// Not being used for now but explicitly declared for child classes in case something gets added here
@@ -42,11 +51,11 @@ public class EnemyShip : MonoBehaviour {
     // To be called when hit by an enemy bullet
     public void HitByPlayer()
     {
-		Instantiate (deathEffect, transform.position, transform.rotation);
+		smokeEffect.SetActive (true);
         hitByPlayer = true;
         PlayerDeathAudioClip();
         gameController.IncreaseScore(100);
-        Destroy(gameObject);
+		GetComponent<Rigidbody> ().useGravity = true;
     }
 
 	// To be called when the enemy hits the player
@@ -65,6 +74,13 @@ public class EnemyShip : MonoBehaviour {
 		if (col.transform.tag == "Player") {
 			col.gameObject.GetComponent<PlayerHealth> ().TakeDamage ();
 			HittingPlayer ();
+		}
+
+		if (col.gameObject.layer == LayerMask.NameToLayer ("Ground") && hitByPlayer) 
+		{
+			Instantiate (deathEffect, transform.position, transform.rotation);
+			PlayerDeathAudioClip();
+			Destroy(gameObject);
 		}
 	}
 
