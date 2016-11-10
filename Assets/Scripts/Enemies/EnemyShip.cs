@@ -56,6 +56,13 @@ public class EnemyShip : MonoBehaviour {
         PlayerDeathAudioClip();
         gameController.IncreaseScore(100);
 		GetComponent<Rigidbody> ().useGravity = true;
+
+		if (!(GetComponentInParent<Animator>() == null)) 
+		{
+			Vector3 temp = transform.position;
+			GetComponentInParent<Animator> ().enabled = false;
+			transform.position = temp;
+		}
     }
 
 	// To be called when the enemy hits the player

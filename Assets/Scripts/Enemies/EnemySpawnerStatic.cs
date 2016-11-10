@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 public class EnemySpawnerStatic : MonoBehaviour
 {
-	public float spawnTime;
 	// The amount of time between each spawn.
-	public float spawnDelay;
+	public float spawnTime;
 	// The amount of time before spawning starts.
-	public GameObject[] enemies;
+	public float spawnDelay;
+	public bool spawnOnAwake;
+
 	// Array of enemy prefabs.
+	public GameObject[] enemies;
 
     private GameController gameController;
 
@@ -24,6 +26,8 @@ public class EnemySpawnerStatic : MonoBehaviour
 
         // Setup variables
 		spawnTimer = spawnTime;
+		if (spawnOnAwake)
+			Spawn ();
 	}
 
 	void Update ()
@@ -35,10 +39,8 @@ public class EnemySpawnerStatic : MonoBehaviour
 		else {
 			// Check for spawnTimer
 			if (spawnTimer <= 0 && gameController.numberOfEnemyFormations < gameController.maxNumberOfEnemyFormations) {
-				// Chose enemy type to spawn
-				nextEnemyIndex = Random.Range (0, enemies.Length);
 
-                Spawn();
+				Spawn();
 
                 if(!notAFormation)
 				    gameController.numberOfEnemyFormations++;
@@ -52,6 +54,9 @@ public class EnemySpawnerStatic : MonoBehaviour
 
     public virtual void Spawn()
     {
+		// Chose enemy type to spawn
+		nextEnemyIndex = Random.Range (0, enemies.Length);
+
         // Final instantiation
         GameObject enemy = (GameObject)Instantiate(enemies[nextEnemyIndex], transform.position, transform.rotation);
     }
