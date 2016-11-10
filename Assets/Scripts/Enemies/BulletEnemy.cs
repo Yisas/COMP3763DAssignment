@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BulletEnemy : MonoBehaviour {
 
-	void OnTriggerEnter2D(Collider2D col){
+	void OnTriggerEnter(Collider col){
 
 		if (col.transform.tag == "Player") 
 		{

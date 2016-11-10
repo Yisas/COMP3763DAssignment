@@ -9,6 +9,6 @@ public class EnemyFormationMoving : EnemyFormation {
 	new void Start () {
         base.Start();
 
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -speed);   
+		GetComponent<Rigidbody>().velocity = new Vector3(0, 0, -speed);   
 	}
 }

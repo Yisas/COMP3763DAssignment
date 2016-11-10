@@ -29,20 +29,29 @@ public class EnemyShipShooter : EnemyShip {
 	new void FixedUpdate(){
 		base.FixedUpdate ();
 
-		RaycastHit2D hit = Physics2D.Raycast(shotSpawn.position, -Vector2.up);
+		Ray ray = new Ray (shotSpawn.position, -Vector3.forward);
+		RaycastHit rayHit;
 
-		if (hit.collider != null) {
-			if (hit.collider.tag == "Player") {
-				Shoot ();
-			}
-		}
+		LayerMask playerLayerMask = 1 << LayerMask.NameToLayer ("Player");
+		playerLayerMask = ~playerLayerMask;
+
+		// Hitting only player layer
+		bool  hit = Physics.Raycast(ray, out rayHit, Mathf.Infinity);
+
+		if(hit)
+			if (rayHit.collider != null) 
+				if (rayHit.collider.tag == "Player")
+					Shoot ();
+		
 	}
 
 	private void Shoot()
 	{
+		Debug.Log ("here");
 		if (shotTimer <= 0 && transform.position.y >= 0) {
+			Debug.Log ("here2");
 				GameObject tempBullet = (GameObject)Instantiate (bullet, shotSpawn.transform.position, bullet.transform.rotation);
-				tempBullet.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, -shotForce);
+			tempBullet.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 0, -shotForce);
 
 				shotTimer = intervalBetweenShots;
 			} 
