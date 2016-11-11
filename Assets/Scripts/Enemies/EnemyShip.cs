@@ -17,6 +17,7 @@ public class EnemyShip : MonoBehaviour {
 	private GameObject smokeEffect;
 	private float deathRotation;
 
+	private Vector3 deathPosition;
     private bool hitByPlayer = false;                   // Whether this ship has been hit by a player
 
     // Use this for initialization
@@ -56,6 +57,7 @@ public class EnemyShip : MonoBehaviour {
         PlayerDeathAudioClip();
         gameController.IncreaseScore(100);
 		GetComponent<Rigidbody> ().useGravity = true;
+		deathPosition = transform.position;
 
 		if (!(GetComponentInParent<Animator>() == null)) 
 		{
@@ -74,7 +76,7 @@ public class EnemyShip : MonoBehaviour {
 
 	void OnDestroy(){
         if(enemyFormation)
-            enemyFormation.EnemyDied(transform.position, hitByPlayer);
+            enemyFormation.EnemyDied(deathPosition, hitByPlayer);
 	}
 
 	void OnTriggerEnter(Collider col){

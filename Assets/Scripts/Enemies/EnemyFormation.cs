@@ -57,6 +57,7 @@ public class EnemyFormation : MonoBehaviour {
     {
         if (!powerupDropped)
         {
+			enemyPosition = new Vector3 (enemyPosition.x, enemyPosition.y, enemyPosition.z + 20);
             powerupDropped = true;
 			Instantiate (powerupDrop, enemyPosition, powerupDrop.transform.rotation);
         }
