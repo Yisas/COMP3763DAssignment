@@ -5,6 +5,7 @@ public class BossController3D : MonoBehaviour {
 
 	public GameObject hitEffect;
 	public GameObject[] weakSpots;
+	public GameObject beamShot;
 
 	public SpriteRenderer healthBar; 
 
@@ -81,7 +82,10 @@ public class BossController3D : MonoBehaviour {
 
 	private void BossShoot()
 	{
-		Debug.Log ("bossShoot");
+		foreach (GameObject go in weakSpots) 
+		{
+			Instantiate(beamShot,go.transform.position, beamShot.transform.rotation);
+		}
 	}
 
 	private void Die()
