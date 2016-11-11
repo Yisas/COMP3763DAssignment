@@ -13,11 +13,14 @@ public class GameController : MonoBehaviour {
     public int numberOfEnemyFormations;
 
     public float bossAppearanceInterval;
+	public AudioClip bossEntranceAudio;
+
     public GameObject[] bulletHellActiveObjects;
     public GameObject[] objectsToDeactivate;
     public GameObject[] objectsToActivate;
 
     private static GameMode gameMode = GameMode.Normal;
+	private AudioSource audioSource;
 
     private int score = 0;
     private float bossAppearanceTimer;
@@ -29,6 +32,8 @@ public class GameController : MonoBehaviour {
 
         // Setup variables
         bossAppearanceTimer = bossAppearanceInterval;
+
+		audioSource = GameObject.FindGameObjectWithTag("MainAudioSource").GetComponent<AudioSource>();
 
         // Turn on bullet hell mode objects
         if (gameMode == GameMode.BulletHell)
@@ -49,16 +54,26 @@ public class GameController : MonoBehaviour {
 
             if (bossAppearanceTimer <= 0)
             {
-                foreach (GameObject go in objectsToDeactivate)
-                    go.SetActive(false);
 
-                foreach (GameObject go in objectsToActivate)
-                    go.SetActive(true);
-
-                bossAppeared = true;
+				StartCoroutine(BossEntrance ());
             }
         }
     }
+
+	private IEnumerator BossEntrance()
+	{
+		audioSource.PlayOneShot (bossEntranceAudio);
+
+		bossAppeared = true;
+
+		yield return new WaitForSeconds (5);
+
+		foreach (GameObject go in objectsToDeactivate)
+			go.SetActive(false);
+
+		foreach (GameObject go in objectsToActivate)
+			go.SetActive(true);
+	}
 
     public void IncreaseScore(int add)
     {
