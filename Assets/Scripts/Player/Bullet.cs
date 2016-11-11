@@ -25,13 +25,14 @@ public class Bullet : MonoBehaviour {
 
         if (col.transform.tag == "BossInvulnerable")
         {
-            col.transform.parent.transform.parent.GetComponent<BossController>().BodyHit(transform.FindChild("bulletTop").transform.position);
+			Vector3 temp = new Vector3 (transform.position.x, transform.position.y, transform.position.z-2);
+			col.GetComponent<BossController3D>().BodyHit(temp);
             Destroy(gameObject);
         }
 
         if(col.transform.tag == "BossWeakSpot")
         {
-            col.transform.parent.GetComponent<BossController>().WeakSpotHit();
+			col.transform.parent.parent.GetComponent<BossController3D>().WeakSpotHit();
             Destroy(gameObject);
         }
 
