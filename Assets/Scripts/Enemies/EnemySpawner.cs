@@ -11,6 +11,10 @@ public class EnemySpawner : MonoBehaviour
 	public GameObject[] enemies;
 	// Array of enemy prefabs.
 
+	public bool sound;
+	public AudioClip spawnSound;
+	private AudioSource audioSource;
+
 	private Transform leftmostSpawnEdge;                    	// Smallest value of x in world coordinates the delivery can happen at.
 	private Transform rightmostSpawnEdge;                   	// Largest value of x in world coordinates the delivery can happen at.
     private GameController gameController;
@@ -28,6 +32,9 @@ public class EnemySpawner : MonoBehaviour
 
         // Setup variables
 		spawnTimer = spawnTime;
+
+		if (sound)
+			audioSource = GetComponent<AudioSource> ();
 	}
 
 	void Update ()
@@ -46,6 +53,11 @@ public class EnemySpawner : MonoBehaviour
 
 				// Final instantiation
 				GameObject enemy = (GameObject)Instantiate (enemies [nextEnemyIndex], nextSpawnPosition, transform.rotation);
+
+				if (sound) {
+					
+					audioSource.PlayOneShot (spawnSound);
+				}
 
 				gameController.numberOfEnemyFormations++;
 

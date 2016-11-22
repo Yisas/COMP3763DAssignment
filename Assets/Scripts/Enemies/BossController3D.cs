@@ -13,6 +13,10 @@ public class BossController3D : MonoBehaviour {
 	public int bodyHitsBeforeExposingWeakSpots;
 	public float exposedWeakSpotTimer;
 
+	public AudioClip chargeAudio;
+	public AudioClip shotAudio;
+
+	private AudioSource audioSource;
 	private int initWeakSpotHitsBeforeDeath;
 	private int initBodyHitsBeforeExposingWeakSpots;
 	private bool weakSpotHit;
@@ -22,6 +26,8 @@ public class BossController3D : MonoBehaviour {
        // Setup variables
 		initWeakSpotHitsBeforeDeath = weakSpotHitsBeforeDeath;
 		initBodyHitsBeforeExposingWeakSpots = bodyHitsBeforeExposingWeakSpots;
+
+		audioSource = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -52,6 +58,8 @@ public class BossController3D : MonoBehaviour {
 		{
 			go.SetActive (true);
 		}
+
+		audioSource.PlayOneShot (chargeAudio);
 
 		yield return new WaitForSeconds(exposedWeakSpotTimer);
 
@@ -86,10 +94,12 @@ public class BossController3D : MonoBehaviour {
 		{
 			Instantiate(beamShot,go.transform.position, beamShot.transform.rotation);
 		}
+
+		audioSource.PlayOneShot (shotAudio);
 	}
 
 	private void Die()
-	{
+	{/*
 		// Turn off enemies, harmful objects and enemy spawners
 		EnemySpawnerHoming[] spawners = transform.GetComponentsInChildren<EnemySpawnerHoming>();
 		foreach (EnemySpawnerHoming esp in spawners)
@@ -101,7 +111,7 @@ public class BossController3D : MonoBehaviour {
 
 		AuxFunctions.DestroyGameObjectsWithTag("BossBeam");
 		AuxFunctions.DestroyGameObjectsWithTag("BossWeakSpot");
-
+		*/
 		StartCoroutine(AuxFunctions.ShakeCamera(1, 3));
 
 		// You win animation
